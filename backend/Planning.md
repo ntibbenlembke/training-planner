@@ -4,7 +4,7 @@
 - POST auth/refresh
 - GET user/profile
 - PUT user/profile
-- ELETE user/account
+- DELETE user/account
 
 ### Calendar Integration
 - POST calendar/connect/google
