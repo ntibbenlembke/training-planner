@@ -1,33 +1,18 @@
-### Authentication & User Management
-- POST auth/register
-- POST auth/login
-- POST auth/refresh
-- GET user/profile
-- PUT user/profile
-- DELETE user/account
-
-### Calendar Integration
-- POST calendar/connect/google
-- POST calendar/connect/callback
-- GET calendar/integrations
-- DELETE calendar/integrations/{id}
-- POST calendar/sync
+### Calendar Events
+- POST calendar/events
 - GET calendar/events
+- GET calendar/events/{start_date}/{end_date}
+- GET calendar/events/{id}
+- PUT calendar/events/{id}
+- DELETE calendar/events/{id}
+- DELETE calendar/events/{id}?recurring=all
 
-### Preferences Management
-- GET /api/weather/current
-- GET /api/weather/forecast
-- POST /api/weather/refresh
-- GET /api/schedule/suggestions
-- POST /api/schedule/generate
-- GET /api/schedule/suggestions/{date}
-- POST /api/schedule/book/{suggestion_id}
+### Suggestions
+- GET suggestions/weekly
+- GET suggestions/weekly/{date}
+- GET suggestions/optimal?date=2025-06-15
+- GET suggestions/optimal?duration=60&difficulty=moderate
 
-### Ride Planning and Tracking
-- GET /api/rides/planned
-- POST /api/rides/plan
-- PUT /api/rides/{id}
-- DELETE /api/rides/{id}
-- POST /api/rides/{id}/complete
-- GET /api/rides/history
-- GET /api/rides/stats
+### User Preferences
+- GET /preferences
+- PUT /preferences
