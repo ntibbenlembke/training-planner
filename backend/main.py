@@ -14,7 +14,7 @@ app = FastAPI(title="Training Planner App",
               lifespan=lifespan
         )
 
-app.include_router(user_router.router, prefix="/users", tags=["users"])
+app.include_router(user_router.router, prefix="/user", tags=["user"])
 app.include_router(calendar_router.router, prefix="/calendar", tags=["calendar"])
 
 @app.get("/")

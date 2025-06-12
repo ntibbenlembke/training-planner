@@ -15,18 +15,15 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    # Relationships
-    training_plans = relationship("TrainingPlan", back_populates="owner", cascade="all, delete-orphan")
-
-class TrainingPlan(Base):
-    __tablename__ = "training_plans"
+class Event(Base):
+    __tablename__ = "events"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(Text, nullable=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    start_time = Column(DateTime(timezone=True))
+    end_time = Column(DateTime(timezone=True))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    training_plan_id = Column(Integer, ForeignKey("training_plans.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-
-    # Relationships
-    owner = relationship("User", back_populates="training_plans") 

@@ -23,31 +23,7 @@ class UserInDB(UserBase):
     updated_at: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class User(UserInDB):
     pass
-
-# Training Plan schemas
-class TrainingPlanBase(BaseModel):
-    title: str
-    description: Optional[str] = None
-
-class TrainingPlanCreate(TrainingPlanBase):
-    pass
-
-class TrainingPlanUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-
-class TrainingPlanInDB(TrainingPlanBase):
-    id: int
-    owner_id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    
-    class Config:
-        orm_mode = True
-
-class TrainingPlan(TrainingPlanInDB):
-    pass 
