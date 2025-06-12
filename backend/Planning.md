@@ -6,11 +6,9 @@
 - PUT calendar/events/{id}
 - DELETE calendar/events/{id}
 
-### Suggestions
-- GET suggestions/weekly
-- GET suggestions/weekly/{date}
-- GET suggestions/optimal?date=2025-06-15
-- GET suggestions/optimal?duration=60&difficulty=moderate
+### Planner
+- POST planner/create
+- GET planner/get
 
 ### User Preferences
 - GET /preferences

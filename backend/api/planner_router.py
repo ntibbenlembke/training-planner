@@ -7,18 +7,10 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("/suggestions/weekly")
-async def get_weekly_suggestions():
-    return {"message": "Weekly suggestions fetched successfully"}
+@router.post("/create-training-plan")
+async def create_planner():
+    return {"message": "Imagine this created an awesome plan"}
 
-@router.get("/suggestions/weekly/{date}")
-async def get_weekly_suggestions_by_date(date: str):
-    return {"message": "Weekly suggestions fetched successfully"}
-
-@router.get("/suggestions/optimal")
-async def get_optimal_suggestions():
-    return {"message": "Optimal suggestions fetched successfully"}
-
-@router.get("/suggestions/optimal")
-async def get_optimal_suggestions_by_duration_and_difficulty(duration: int, difficulty: str):
-    return {"message": "Optimal suggestions fetched successfully"}
+@router.get("/get-training-plan")
+async def get_planner(date: str):
+    return {"message": "Just imagine this fetched an awesome plan"}

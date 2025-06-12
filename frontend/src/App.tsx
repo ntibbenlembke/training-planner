@@ -1,6 +1,5 @@
 import Header from './components/Header'
 import Calendar from './components/Calendar'
-import CreateEvent from './components/EventCreate'
 import GeneratePlan from './components/GeneratePlan'
 import './App.css'
 
@@ -15,7 +14,6 @@ function App() {
           <Calendar />
         </div>
         <div className="w-1/4 flex flex-col">
-          <CreateEvent />
           <GeneratePlan />
         </div>
       </div>
