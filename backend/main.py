@@ -17,6 +17,6 @@ app = FastAPI(title="Training Planner App",
 app.include_router(user_router.router, prefix="/user", tags=["user"])
 app.include_router(calendar_router.router, prefix="/calendar", tags=["calendar"])
 
-@app.get("/")
-async def root():
+@app.get("/healthcheck")
+async def healthcheck():
     return {"message": "Welcome to the Training Planner API"}

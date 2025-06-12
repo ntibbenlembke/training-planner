@@ -27,3 +27,19 @@ class UserInDB(UserBase):
 
 class User(UserInDB):
     pass
+
+#event schemas
+class Event(BaseModel):
+    title: str
+    description: Optional[str] = None
+    start_time: datetime
+    end_time: datetime
+
+class EventCreate(Event):
+    pass
+
+class EventUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None

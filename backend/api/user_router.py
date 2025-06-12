@@ -3,7 +3,7 @@ from io import StringIO, BytesIO
 from fastapi.responses import JSONResponse
 from typing import List
 from sqlalchemy.orm import Session
-from database import schemas, crudf
+from database import schemas, crud
 from database.database import get_db
 
 router = APIRouter(tags=["user"])

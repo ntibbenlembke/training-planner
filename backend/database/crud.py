@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 from typing import List, Optional
+from datetime import datetime
 
 # User CRUD operations
 def get_user(db: Session, user_id: int):
@@ -52,20 +53,7 @@ def delete_user(db: Session, user_id: int):
     db.commit()
     return True
 
-"""
-# Event CRUD operations
-def get_event(db: Session, event_id: int):
-    return db.query(models.Event).filter(models.Event.id == event_id).first()
-
-def get_events(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Event).offset(skip).limit(limit).all()
-
-def get_user_events(db: Session, user_id: int, skip: int = 0, limit: int = 100):
-    return db.query(models.Event).filter(models.Event.user_id == user_id).offset(skip).limit(limit).all()
-
-def get_training_plan_events(db: Session, training_plan_id: int, skip: int = 0, limit: int = 100):
-    return db.query(models.Event).filter(models.Event.training_plan_id == training_plan_id).offset(skip).limit(limit).all()
-
+#event operations
 def create_event(db: Session, event: schemas.EventCreate, user_id: int):
     db_event = models.Event(
         **event.model_dump(),
@@ -75,6 +63,15 @@ def create_event(db: Session, event: schemas.EventCreate, user_id: int):
     db.commit()
     db.refresh(db_event)
     return db_event
+
+def get_all_events(db: Session):
+    return db.query(models.Event).all()
+
+def get_event(db: Session, event_id: int):
+    return db.query(models.Event).filter(models.Event.id == event_id).first()
+
+def get_events_by_date(db: Session, start_date: datetime, end_date: datetime):
+    return db.query(models.Event).filter(models.Event.start_time >= start_date, models.Event.end_time <= end_date).all()
 
 def update_event(db: Session, event_id: int, event: schemas.EventUpdate):
     db_event = get_event(db, event_id)
@@ -96,4 +93,4 @@ def delete_event(db: Session, event_id: int):
         return False
     db.delete(db_event)
     db.commit()
-    return True """
+    return True
