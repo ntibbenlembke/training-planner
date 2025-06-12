@@ -72,29 +72,3 @@ The database tables are automatically created when you start the application. If
 ```bash
 python -c "from database.init_db import init_db; init_db()"
 ```
-
-## Database Migration
-
-For more complex database migrations, consider using Alembic:
-
-1. **Install Alembic**:
-   ```bash
-   poetry add alembic
-   ```
-
-2. **Initialize Alembic**:
-   ```bash
-   alembic init migrations
-   ```
-
-3. **Configure Alembic** by editing `alembic.ini` and `migrations/env.py`
-
-4. **Create a migration**:
-   ```bash
-   alembic revision --autogenerate -m "Initial migration"
-   ```
-
-5. **Apply the migration**:
-   ```bash
-   alembic upgrade head
-   ``` 

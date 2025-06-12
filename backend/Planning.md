@@ -5,7 +5,6 @@
 - GET calendar/events/{id}
 - PUT calendar/events/{id}
 - DELETE calendar/events/{id}
-- DELETE calendar/events/{id}?recurring=all
 
 ### Suggestions
 - GET suggestions/weekly
