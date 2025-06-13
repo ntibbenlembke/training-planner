@@ -185,7 +185,9 @@ export default function Calendar() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to create event');
+        const errorText = await response.text();
+        console.error('Create failed:', errorText);
+        throw new Error(`Failed to create event: ${response.status} ${errorText}`);
       }
       
       const newEvent = await response.json();
