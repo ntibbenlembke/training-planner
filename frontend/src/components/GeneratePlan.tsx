@@ -30,7 +30,7 @@ export default function GeneratePlan() {
     days_of_week: []
   });
 
-  // Update preferences when week dates change
+  //update preferences when week dates change
   useEffect(() => {
     setPreferences(prev => ({
       ...prev,
@@ -43,7 +43,7 @@ export default function GeneratePlan() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Current user ID
+  //current user ID
   const userId = 3;
 
   const handlePreferenceChange = (field: keyof PlanGenerationRequest, value: string | number | string[]) => {
@@ -93,14 +93,8 @@ export default function GeneratePlan() {
         throw new Error(`Failed to generate plan: ${response.status} ${errorText}`);
       }
 
-      const result = await response.json();
       setMessage('Training plan generated successfully!');
-      console.log('Generated plan:', result);
       
-      // Temporary debug: Log what was created
-      console.log('🏋️ TrainingPlan: Generated events count:', result.events?.length || 0);
-      
-      // Refresh the calendar to show new events using context
       triggerRefresh();
       
     } catch (err) {
@@ -120,7 +114,7 @@ export default function GeneratePlan() {
     <div className="bg-paper border-2 border-gray-800 mx-4 mt-4 p-4">
       <h1 className="text-xl font-bold mb-4">Generate Training Plan</h1>
 
-      {/* Frequency */}
+      {/* frequency */}
       <div className="mb-4">
         <label className="block mb-1 font-semibold">Workouts per Week</label>
         <input
@@ -133,7 +127,7 @@ export default function GeneratePlan() {
         />
       </div>
 
-      {/* Preferred Time */}
+      {/* preferred time */}
       <div className="mb-4">
         <label className="block mb-1 font-semibold">Preferred Time of Day</label>
         <select
@@ -149,7 +143,7 @@ export default function GeneratePlan() {
         </select>
       </div>
 
-      {/* Workout Duration */}
+      {/* workout duration */}
       <div className="mb-4">
         <label className="block mb-1 font-semibold">Workout Duration (minutes)</label>
         <input
@@ -163,7 +157,7 @@ export default function GeneratePlan() {
         />
       </div>
 
-      {/* Padding Times */}
+      {/* padding times */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
           <label className="block mb-1 font-semibold">Prep Time (minutes)</label>
@@ -191,7 +185,7 @@ export default function GeneratePlan() {
         </div>
       </div>
 
-      {/* Workout Types */}
+      {/* workout types */}
       <div className="mb-4">
         <label className="block mb-2 font-semibold">Workout Types</label>
         <div className="grid grid-cols-2 gap-2">
@@ -209,7 +203,7 @@ export default function GeneratePlan() {
         </div>
       </div>
 
-      {/* Difficulty Level */}
+      {/* difficulty level */}
       <div className="mb-4">
         <label className="block mb-1 font-semibold">Difficulty Level</label>
         <select
@@ -225,7 +219,7 @@ export default function GeneratePlan() {
         </select>
       </div>
 
-      {/* Preferred Days */}
+      {/* preferred days */}
       <div className="mb-6">
         <label className="block mb-2 font-semibold">Preferred Days (optional)</label>
         <div className="grid grid-cols-2 gap-2">
@@ -243,7 +237,7 @@ export default function GeneratePlan() {
         </div>
       </div>
 
-      {/* Status Messages */}
+      {/* status messages */}
       {message && (
         <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
           {message}
@@ -256,7 +250,7 @@ export default function GeneratePlan() {
         </div>
       )}
 
-      {/* Generate Button */}
+      {/* generate button */}
       <button
         onClick={generatePlan}
         disabled={isGenerating || preferences.workout_types.length === 0}

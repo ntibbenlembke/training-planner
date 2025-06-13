@@ -17,7 +17,7 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   
-  // Calculate week start and end dates
+  //calculate week start and end dates
   const weekStart = startOfWeek(currentDate);
   const weekEnd = addDays(weekStart, 7);
 

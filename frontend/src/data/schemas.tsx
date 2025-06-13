@@ -1,5 +1,3 @@
-
-// Types for our calendar events matching the backend schemas
 interface CalendarEvent {
     id: number;
     title: string;
@@ -15,7 +13,6 @@ interface CalendarEvent {
     updated_at?: string;
   }
   
-// Type for creating a new event
 interface EventCreate {
     title: string;
     start_time: string;
@@ -27,7 +24,7 @@ interface EventCreate {
     training_plan_id?: number;
 }
 
-// Type for updating an event
+
 interface EventUpdate {
     title?: string;
     start_time?: string;
