@@ -1,28 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { buildApiUrl } from '../config/api';
+import { useCalendar } from '../context/CalendarContext';
 
-interface PlannerPreferences {
-  frequency_per_week: number;
-  preferred_time_of_day: string;
-  workout_duration_minutes: number;
-  padding_before_minutes: number;
-  padding_after_minutes: number;
+interface PlanGenerationRequest {
+  start_date: string;
+  end_date: string;
+  frequency: number;
+  time_of_day: string;
+  duration: number;
+  prep_time: number;
+  cooldown_time: number;
   workout_types: string[];
   difficulty_level: string;
   days_of_week: string[];
 }
 
 export default function GeneratePlan() {
-  const [preferences, setPreferences] = useState<PlannerPreferences>({
-    frequency_per_week: 3,
-    preferred_time_of_day: 'morning',
-    workout_duration_minutes: 60,
-    padding_before_minutes: 15,
-    padding_after_minutes: 15,
+  const { weekStart, weekEnd, triggerRefresh } = useCalendar();
+  const [preferences, setPreferences] = useState<PlanGenerationRequest>({
+    start_date: weekStart.toISOString(),
+    end_date: weekEnd.toISOString(),
+    frequency: 3,
+    time_of_day: 'morning',
+    duration: 60,
+    prep_time: 15,
+    cooldown_time: 15,
     workout_types: ['cycling'],
     difficulty_level: 'moderate',
     days_of_week: []
   });
+
+  // Update preferences when week dates change
+  useEffect(() => {
+    setPreferences(prev => ({
+      ...prev,
+      start_date: weekStart.toISOString(),
+      end_date: weekEnd.toISOString()
+    }));
+  }, [weekStart, weekEnd]);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -31,7 +46,7 @@ export default function GeneratePlan() {
   // Current user ID
   const userId = 3;
 
-  const handlePreferenceChange = (field: keyof PlannerPreferences, value: string | number | string[]) => {
+  const handlePreferenceChange = (field: keyof PlanGenerationRequest, value: string | number | string[]) => {
     setPreferences(prev => ({
       ...prev,
       [field]: value
@@ -82,8 +97,11 @@ export default function GeneratePlan() {
       setMessage('Training plan generated successfully!');
       console.log('Generated plan:', result);
       
-      // Optionally refresh the calendar to show new events
-      window.location.reload();
+      // Temporary debug: Log what was created
+      console.log('🏋️ TrainingPlan: Generated events count:', result.events?.length || 0);
+      
+      // Refresh the calendar to show new events using context
+      triggerRefresh();
       
     } catch (err) {
       setError('Error generating plan: ' + (err instanceof Error ? err.message : String(err)));
@@ -110,8 +128,8 @@ export default function GeneratePlan() {
           min="1"
           max="7"
           className="w-full p-2 border border-gray-800"
-          value={preferences.frequency_per_week}
-          onChange={(e) => handlePreferenceChange('frequency_per_week', parseInt(e.target.value))}
+          value={preferences.frequency}
+          onChange={(e) => handlePreferenceChange('frequency', parseInt(e.target.value))}
         />
       </div>
 
@@ -120,8 +138,8 @@ export default function GeneratePlan() {
         <label className="block mb-1 font-semibold">Preferred Time of Day</label>
         <select
           className="w-full p-2 border border-gray-800"
-          value={preferences.preferred_time_of_day}
-          onChange={(e) => handlePreferenceChange('preferred_time_of_day', e.target.value)}
+          value={preferences.time_of_day}
+          onChange={(e) => handlePreferenceChange('time_of_day', e.target.value)}
         >
           {timeOptions.map(time => (
             <option key={time} value={time}>
@@ -140,8 +158,8 @@ export default function GeneratePlan() {
           max="180"
           step="15"
           className="w-full p-2 border border-gray-800"
-          value={preferences.workout_duration_minutes}
-          onChange={(e) => handlePreferenceChange('workout_duration_minutes', parseInt(e.target.value))}
+          value={preferences.duration}
+          onChange={(e) => handlePreferenceChange('duration', parseInt(e.target.value))}
         />
       </div>
 
@@ -155,8 +173,8 @@ export default function GeneratePlan() {
             max="60"
             step="5"
             className="w-full p-2 border border-gray-800"
-            value={preferences.padding_before_minutes}
-            onChange={(e) => handlePreferenceChange('padding_before_minutes', parseInt(e.target.value))}
+            value={preferences.prep_time}
+            onChange={(e) => handlePreferenceChange('prep_time', parseInt(e.target.value))}
           />
         </div>
         <div>
@@ -167,8 +185,8 @@ export default function GeneratePlan() {
             max="60"
             step="5"
             className="w-full p-2 border border-gray-800"
-            value={preferences.padding_after_minutes}
-            onChange={(e) => handlePreferenceChange('padding_after_minutes', parseInt(e.target.value))}
+            value={preferences.cooldown_time}
+            onChange={(e) => handlePreferenceChange('cooldown_time', parseInt(e.target.value))}
           />
         </div>
       </div>

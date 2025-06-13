@@ -2,9 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { format, startOfWeek, addDays, startOfDay, addHours, parseISO } from 'date-fns';
 import type { CalendarEvent, EventCreate, EventUpdate } from '../data/schemas.tsx';
 import { ENDPOINTS, buildApiUrl } from '../config/api';
+import { useCalendar } from '../context/CalendarContext';
 
 export default function Calendar() {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const { currentDate, setCurrentDate, weekStart, refreshTrigger } = useCalendar();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,8 +22,7 @@ export default function Calendar() {
   const userId = 3;
 
   const weekDays = (() => {
-    const startDay = startOfWeek(currentDate);
-    return Array.from({ length: 7 }).map((_, index) => addDays(startDay, index));
+    return Array.from({ length: 7 }).map((_, index) => addDays(weekStart, index));
   })();
 
   // start and end hours for the calendar
@@ -82,7 +82,11 @@ export default function Calendar() {
         
         const sameHour = eventDate.getHours() === hour;
         
-        return sameDay && sameHour;
+        const matches = sameDay && sameHour;
+        
+
+        
+        return matches;
       } catch (err) {
         console.error('Error parsing event date:', err, event);
         return false;
@@ -122,22 +126,40 @@ export default function Calendar() {
         className="border border-gray-300 h-16 relative"
         onClick={() => handleSlotClick(day, hour)}
       >
-        {slotEvents.map(event => (
-          <div 
-            key={`${event.id}-${event.title}`}
-            className="absolute left-1 right-1 bg-blue bg-opacity-20 border border-blue rounded p-1 text-xs text-paper cursor-pointer overflow-hidden z-10"
-            style={getEventStyle(event)}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEventClick(event);
-            }}
-          >
-            <div className="font-semibold truncate">{event.title}</div>
-            <div className="text-xs opacity-75 truncate">
-              {format(parseISO(event.start_time), 'HH:mm')} - {format(parseISO(event.end_time), 'HH:mm')}
+        {slotEvents.map((event, index) => {
+          // Different colors for different event types
+          const getEventColor = () => {
+            if (event.event_type === 'prep') return 'bg-green-500 bg-opacity-20 border-green-500';
+            if (event.event_type === 'workout') return 'bg-red-500 bg-opacity-20 border-red-500';
+            if (event.event_type === 'cooldown') return 'bg-yellow-500 bg-opacity-20 border-yellow-500';
+            return 'bg-blue bg-opacity-20 border-blue';
+          };
+          
+          // Offset overlapping events horizontally
+          const leftOffset = index * 2;
+          const widthReduction = index * 10;
+          
+          return (
+            <div 
+              key={`${event.id}-${event.title}`}
+              className={`absolute rounded p-1 text-xs text-paper cursor-pointer overflow-hidden z-10 ${getEventColor()}`}
+              style={{
+                ...getEventStyle(event),
+                left: `${1 + leftOffset}px`,
+                right: `${1 + widthReduction}px`,
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEventClick(event);
+              }}
+            >
+              <div className="font-semibold truncate">{event.title}</div>
+              <div className="text-xs opacity-75 truncate">
+                {format(parseISO(event.start_time), 'HH:mm')} - {format(parseISO(event.end_time), 'HH:mm')}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   };
@@ -159,6 +181,19 @@ export default function Calendar() {
       const data = await response.json();
       
       const processedEvents = Array.isArray(data) ? data : [];
+      
+      // Temporary debug: Log events and their types
+      console.log('📅 Calendar: Fetched events', {
+        total: processedEvents.length,
+        regular: processedEvents.filter(e => !e.event_type).length,
+        training: processedEvents.filter(e => e.event_type).length,
+        trainingDetails: processedEvents.filter(e => e.event_type).map(e => ({
+          id: e.id,
+          title: e.title,
+          event_type: e.event_type,
+          start_time: e.start_time
+        }))
+      });
       
       setEvents(processedEvents);
     } catch (err) {
@@ -191,7 +226,9 @@ export default function Calendar() {
       }
       
       const newEvent = await response.json();
-      setEvents(prev => [...prev, newEvent]);
+      // Instead of just adding to local state, refresh all events from API
+      // This ensures consistency between manual and generated events
+      await fetchEventsByDateRange();
       return newEvent;
     } catch (err) {
       setError('Error creating event: ' + (err instanceof Error ? err.message : String(err)));
@@ -310,10 +347,10 @@ export default function Calendar() {
     }
   };
 
-  // Fetch events when component mounts or currentDate changes
+  // Fetch events when component mounts, currentDate changes, or refresh is triggered
   useEffect(() => {
     fetchEventsByDateRange();
-  }, [currentDate, fetchEventsByDateRange]);
+  }, [currentDate, fetchEventsByDateRange, refreshTrigger]);
 
   return (
     <div className="bg-paper border-2 border-gray-800 mx-4 mt-4 p-4">
