@@ -6,6 +6,12 @@ export interface CalendarEvent {
   end_time: string;
   description?: string;
   user_id: number;
+  event_type?: string;
+  workout_type?: string;
+  difficulty_level?: string;
+  training_plan_id?: number;
+  created_at: string;
+  updated_at?: string;
 }
 
 export interface EventCreate {
@@ -13,6 +19,10 @@ export interface EventCreate {
   start_time: string;
   end_time: string;
   description?: string;
+  event_type?: string;
+  workout_type?: string;
+  difficulty_level?: string;
+  training_plan_id?: number;
 }
 
 export interface EventUpdate {
@@ -20,4 +30,7 @@ export interface EventUpdate {
   start_time?: string;
   end_time?: string;
   description?: string;
+  event_type?: string;
+  workout_type?: string;
+  difficulty_level?: string;
 } 
