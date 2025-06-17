@@ -122,8 +122,9 @@ export default function GeneratePlan() {
 
       {/* Frequency */}
       <div className="mb-4">
-        <label className="block mb-1 font-semibold">Workouts per Week</label>
+        <label className="block mb-1 font-semibold" htmlFor='workout-frequency'>Workouts per Week</label>
         <input
+          id='workout-frequency'
           type="number"
           min="1"
           max="7"
@@ -135,8 +136,9 @@ export default function GeneratePlan() {
 
       {/* Preferred Time */}
       <div className="mb-4">
-        <label className="block mb-1 font-semibold">Preferred Time of Day</label>
+        <label className="block mb-1 font-semibold" htmlFor='time-preference'>Preferred Time of Day</label>
         <select
+          id='time-preference'
           className="w-full p-2 border border-gray-800"
           value={preferences.time_of_day}
           onChange={(e) => handlePreferenceChange('time_of_day', e.target.value)}
@@ -151,8 +153,9 @@ export default function GeneratePlan() {
 
       {/* Workout Duration */}
       <div className="mb-4">
-        <label className="block mb-1 font-semibold">Workout Duration (minutes)</label>
+        <label className="block mb-1 font-semibold" htmlFor='workout-duration'>Workout Duration (minutes)</label>
         <input
+          id='workout-duration'
           type="number"
           min="15"
           max="180"
@@ -166,8 +169,9 @@ export default function GeneratePlan() {
       {/* Padding Times */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block mb-1 font-semibold">Prep Time (minutes)</label>
+          <label className="block mb-1 font-semibold" htmlFor='prep-time'>Prep Time (minutes)</label>
           <input
+            id='prep-time'
             type="number"
             min="0"
             max="60"
@@ -178,8 +182,9 @@ export default function GeneratePlan() {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold">Cool Down (minutes)</label>
+          <label className="block mb-1 font-semibold" htmlFor='cooldown-time'>Cool Down (minutes)</label>
           <input
+            id='cooldown-time'
             type="number"
             min="0"
             max="60"
@@ -193,11 +198,12 @@ export default function GeneratePlan() {
 
       {/* Workout Types */}
       <div className="mb-4">
-        <label className="block mb-2 font-semibold">Workout Types</label>
+        <label className="block mb-2 font-semibold" id='workout-types'>Workout Types</label>
         <div className="grid grid-cols-2 gap-2">
           {workoutTypes.map(type => (
             <label key={type} className="flex items-center">
               <input
+                id={`${type}-workout-type`}
                 type="checkbox"
                 className="mr-2"
                 checked={preferences.workout_types.includes(type)}
@@ -211,8 +217,9 @@ export default function GeneratePlan() {
 
       {/* Difficulty Level */}
       <div className="mb-4">
-        <label className="block mb-1 font-semibold">Difficulty Level</label>
+        <label className="block mb-1 font-semibold" htmlFor='difficulty-level'>Difficulty Level</label>
         <select
+          id='difficulty-level'
           className="w-full p-2 border border-gray-800"
           value={preferences.difficulty_level}
           onChange={(e) => handlePreferenceChange('difficulty_level', e.target.value)}
@@ -232,6 +239,7 @@ export default function GeneratePlan() {
           {daysOfWeek.map(day => (
             <label key={day} className="flex items-center">
               <input
+                id= {`day-preference-${day}`}
                 type="checkbox"
                 className="mr-2"
                 checked={preferences.days_of_week.includes(day)}
@@ -258,6 +266,7 @@ export default function GeneratePlan() {
 
       {/* Generate Button */}
       <button
+        id='generate-plan'
         onClick={generatePlan}
         disabled={isGenerating || preferences.workout_types.length === 0}
         className={`w-full py-4 text-lg font-bold border-2 transition-colors ${
