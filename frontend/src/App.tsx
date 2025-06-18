@@ -1,26 +1,29 @@
-import Header from './components/Header'
-import Calendar from './components/Calendar'
-import GeneratePlan from './components/GeneratePlan'
-import { CalendarProvider } from './context/CalendarContext'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import CalendarPage from './pages/CalendarPage'
+import LoginPage from './pages/LoginPage'
+import Root from './pages/Root'
 import './App.css'
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/calendar",
+        element: <CalendarPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      }
+    ]
+  }
+])
 
 function App() {
   return (
-    <CalendarProvider>
-      <div className="flex flex-col min-h-screen bg-paper">
-        <div className="w-full">
-          <Header />
-        </div>
-        <div className="flex flex-row flex-1">
-          <div className="w-3/4">
-            <Calendar />
-          </div>
-          <div className="w-1/4 flex flex-col">
-            <GeneratePlan />
-          </div>
-        </div>
-      </div>
-    </CalendarProvider>
+    <RouterProvider router={router} />
   )
 }
 
