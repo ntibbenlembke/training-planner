@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from api import (
     calendar_router,
     user_router,
-    planner_router
+    planner_router,
+    auth_router
 )
 from database.init_db import init_db
 
@@ -28,6 +29,7 @@ app.add_middleware(
 app.include_router(user_router.router, prefix="/user", tags=["user"])
 app.include_router(calendar_router.router, prefix="/calendar", tags=["calendar"])
 app.include_router(planner_router.router, prefix="/planner", tags=["planner"])
+app.include_router(auth_router.router, tags=["authentication"])
 
 @app.get("/healthcheck")
 async def healthcheck():

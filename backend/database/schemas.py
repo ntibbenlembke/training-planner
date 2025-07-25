@@ -11,6 +11,9 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserCreateOAuth(UserBase):
+    google_id: str
+
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     username: Optional[str] = None
@@ -22,6 +25,8 @@ class UserInDB(UserBase):
     is_active: bool
     created_at: datetime
     updated_at: Optional[datetime] = None
+    google_id: Optional[str] = None
+    google_calendar_connected: bool = False
     
     class Config:
         from_attributes = True

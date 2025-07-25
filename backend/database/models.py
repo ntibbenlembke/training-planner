@@ -11,10 +11,17 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    hashed_password = Column(String, nullable=True)  # Make nullable for OAuth users
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Google OAuth fields
+    google_id = Column(String, unique=True, nullable=True, index=True)
+    google_access_token = Column(Text, nullable=True)
+    google_refresh_token = Column(Text, nullable=True)
+    google_token_expires_at = Column(DateTime(timezone=True), nullable=True)
+    google_calendar_connected = Column(Boolean, default=False)
 
     # Relationships
     events = relationship("Event", back_populates="user")

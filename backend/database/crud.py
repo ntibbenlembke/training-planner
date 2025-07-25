@@ -29,6 +29,38 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def create_user_oauth(db: Session, user: schemas.UserCreateOAuth, 
+                     access_token: str, refresh_token: str, expires_at):
+    db_user = models.User(
+        email=user.email,
+        username=user.username,
+        google_id=user.google_id,
+        google_access_token=access_token,
+        google_refresh_token=refresh_token,
+        google_token_expires_at=expires_at,
+        google_calendar_connected=True
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def update_user_oauth_tokens(db: Session, user_id: int, google_id: str,
+                           access_token: str, refresh_token: str, expires_at):
+    db_user = get_user(db, user_id)
+    if not db_user:
+        return None
+    
+    db_user.google_id = google_id
+    db_user.google_access_token = access_token
+    db_user.google_refresh_token = refresh_token
+    db_user.google_token_expires_at = expires_at
+    db_user.google_calendar_connected = True
+    
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
     db_user = get_user(db, user_id)
     if not db_user:
