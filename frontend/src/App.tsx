@@ -3,6 +3,10 @@ import CalendarPage from './pages/CalendarPage'
 import LoginPage from './pages/LoginPage'
 import Root from './pages/Root'
 import './App.css'
+import { AuthProvider } from './context/AuthContext'
+
+// Callback page to handle Google OAuth redirect
+import AuthCallback from './pages/AuthCallback.tsx'
 
 const router = createBrowserRouter([
   {
@@ -16,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/auth-callback",
+        element: <AuthCallback />
       }
     ]
   }
@@ -23,7 +31,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 
