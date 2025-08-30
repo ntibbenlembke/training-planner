@@ -85,6 +85,7 @@ export default function Root() {
                     <h1 className="text-2xl font-bold mb-1 text-center">Sign up for Training Planner</h1>
                     <h4 className="text-sm text-center mb-6">Plan your training schedule and get the most out of your rides.</h4>
 
+                    <h3 className="text-sm text-center mb-6">Already a user? <a href="/login" className="text-blue-500">Log In</a></h3>
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                             {error}
