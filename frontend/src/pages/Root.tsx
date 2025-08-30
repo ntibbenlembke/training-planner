@@ -6,6 +6,8 @@ export default function Root() {
         <div className="flex flex-col min-h-screen bg-paper">
             <Header />
             <Outlet />
+
+            
         </div>
     );
 }

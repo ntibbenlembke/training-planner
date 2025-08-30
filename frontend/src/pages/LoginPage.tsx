@@ -37,8 +37,8 @@ export default function LoginPage() {
     }
     
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-paper">
+            <div className="p-8 bg-paper border-2 border-grey-800 w-full max-w-md">
                 <h1 className="text-2xl font-bold mb-6 text-center">Login to Training Planner</h1>
                 
                 {error && (
@@ -50,13 +50,13 @@ export default function LoginPage() {
                 <button
                     onClick={handleGoogleLogin}
                     disabled={isLoading}
-                    className="w-full flex justify-center items-center bg-white border border-gray-300 rounded-lg shadow-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="w-full flex justify-center items-center bg-paper border border-blue shadow-md px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                     {isLoading ? (
                         <span>Loading...</span>
                     ) : (
                         <>
-                            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24"> 
                                 <path
                                     fill="#4285F4"
                                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -78,6 +78,29 @@ export default function LoginPage() {
                         </>
                     )}
                 </button>
+
+                <div className="py-3 flex items-center text-xs text-gray-800 uppercase before:flex-1 before:border-t before:border-gray-800 before:me-6 after:flex-1 after:border-t after:border-gray-800 after:ms-6">Or</div>
+
+                <div className="mb-4">
+                    <label>Username</label>
+                    <input
+                        type="string"
+                        className="w-full p-2 border border-gray-800"
+                    />
+                    <label>Password</label>
+                    <input
+                        type="string"
+                        className="w-full p-2 border border-gray-800"
+                    />
+
+
+                    <button className="w-full py-3 px-2 bg-blue text-white border-blue hover:bg-blue-dark hover:border-blue-dark mt-4" >
+                        Login
+                    </button>
+                </div>
+                
+
+                
             </div>
         </div>
     );
