@@ -22,7 +22,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     db_user = models.User(
         email=user.email,
         username=user.username,
-        hashed_password=fake_hashed_password
+        hashed_password=fake_hashed_password,
+        google_id=None,
+        google_access_token=None,
+        google_refresh_token=None,
+        google_token_expires_at=None,
+        google_calendar_connected=False
     )
     db.add(db_user)
     db.commit()
